@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Facebook, Instagram, Twitter, Linkedin, ArrowUpCircle } from "lucide-react";
 
@@ -15,6 +14,14 @@ const Footer = () => {
       <div className="container mx-auto px-4 md:px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
+           
+            <div className="mb-4">
+              <img 
+                src="/logo.jpeg" 
+                alt="Mangaluru Woods Logo" 
+                className="h-24 w-auto" 
+              />
+            </div>
             <h3 className="text-2xl font-display font-bold mb-4">
               <span className="text-teak-medium">Mangaluru</span> Woods
             </h3>
@@ -63,19 +70,19 @@ const Footer = () => {
             <ul className="space-y-3 text-teak-lightest/80">
               <li>
                 <span className="block font-medium text-white">Mangalore</span>
-                123 Coastal Road, Mangalore
+                {/* 123 Coastal Road, Mangalore */}
               </li>
               <li>
                 <span className="block font-medium text-white">Bangalore</span>
-                456 MG Road, Bangalore
+                {/* 456 MG Road, Bangalore */}
               </li>
               <li>
                 <span className="block font-medium text-white">Hyderabad</span>
-                789 Jubilee Hills, Hyderabad
+                {/* 789 Jubilee Hills, Hyderabad */}
               </li>
               <li>
                 <span className="block font-medium text-white">Mumbai</span>
-                101 Marine Drive, Mumbai
+                {/* 101 Marine Drive, Mumbai */}
               </li>
             </ul>
           </div>

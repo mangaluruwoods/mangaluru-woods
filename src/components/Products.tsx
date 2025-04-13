@@ -1,14 +1,15 @@
+"use client"
 
-import React, { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Info } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
+import { ExternalLink } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
 
 interface Product {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-  category: string;
+  id: number
+  name: string
+  description: string
+  image: string
+  category: string
 }
 
 const products: Product[] = [
@@ -54,143 +55,198 @@ const products: Product[] = [
     image: "https://images.unsplash.com/photo-1510928486644-f1b75b578f20?q=80&w=2071&auto=format&fit=crop",
     category: "Doors",
   },
-];
+]
 
 const Products = () => {
-  const [activeCategory, setActiveCategory] = useState<string>("All");
-  const [visibleProducts, setVisibleProducts] = useState<Product[]>(products);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const productsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string>("All")
+  const [visibleProducts, setVisibleProducts] = useState<Product[]>(products)
+  const [selectedProduct, setSelectedProduct] = useState<number | null>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const productsRef = useRef<(HTMLDivElement | null)[]>([])
 
-  const categories = ["All", ...new Set(products.map((product) => product.category))];
+  const categories = ["All", ...new Set(products.map((product) => product.category))]
 
   useEffect(() => {
     if (activeCategory === "All") {
-      setVisibleProducts(products);
+      setVisibleProducts(products)
     } else {
-      setVisibleProducts(products.filter((product) => product.category === activeCategory));
+      setVisibleProducts(products.filter((product) => product.category === activeCategory))
     }
-  }, [activeCategory]);
+  }, [activeCategory])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Only add the fade-in class to make visible, don't remove it
-            entry.target.classList.add("animate-fade-in");
-            entry.target.style.opacity = "1"; // Ensure opacity stays at 1
-            observer.unobserve(entry.target); // Stop observing once visible
+            entry.target.classList.add("animate-fade-in")
+            if (entry.target instanceof HTMLElement) {
+              entry.target.style.opacity = "1"
+            }
+            observer.unobserve(entry.target)
           }
-        });
+        })
       },
       {
         root: null,
         rootMargin: "0px",
         threshold: 0.1,
-      }
-    );
+      },
+    )
 
-    if (sectionRef.current) {
-      // Set initial opacity to 1 to ensure it's visible
-      sectionRef.current.style.opacity = "1";
-      observer.observe(sectionRef.current);
+    const sectionNode = sectionRef.current
+    const productNodes = [...productsRef.current]
+
+    if (sectionNode) {
+      sectionNode.style.opacity = "1"
+      observer.observe(sectionNode)
     }
 
-    productsRef.current.forEach((ref) => {
+    productNodes.forEach((ref) => {
       if (ref) {
-        // Set initial opacity to 1 to ensure visibility
-        ref.style.opacity = "1";
-        observer.observe(ref);
+        ref.style.opacity = "1"
+        observer.observe(ref)
       }
-    });
+    })
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (sectionNode) {
+        observer.unobserve(sectionNode)
       }
-      productsRef.current.forEach((ref) => {
-        if (ref) observer.unobserve(ref);
-      });
-    };
-  }, [visibleProducts]);
+      productNodes.forEach((ref) => {
+        if (ref) observer.unobserve(ref)
+      })
+    }
+  }, [visibleProducts])
 
   const addToRefs = (el: HTMLDivElement | null, index: number) => {
     if (el && !productsRef.current.includes(el)) {
-      productsRef.current[index] = el;
+      productsRef.current[index] = el
     }
-  };
+  }
+
+  const handleProductClick = (id: number) => {
+    setSelectedProduct(selectedProduct === id ? null : id)
+  }
 
   return (
-    <div id="products" className="py-24 bg-background relative">
-      <div className="absolute inset-0 wood-pattern opacity-5"></div>
-      <div ref={sectionRef} className="container mx-auto px-4 md:px-6 opacity-0 animate-fade-in">
+    <div id="products" className="py-24 relative">
+      {/* Wood texture background */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-10"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1606041008023-472dfb5e530f?q=80&w=2033&auto=format&fit=crop')",
+          backgroundAttachment: "fixed",
+        }}
+      ></div>
+
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
+
+      <div ref={sectionRef} className="container mx-auto px-4 md:px-6 opacity-0 animate-fade-in relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-wood-dark mb-4">
-            Our Premium Products
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-wood-dark mb-4">Our Premium Products</h2>
           <div className="h-0.5 w-24 bg-teak-medium mx-auto mb-6"></div>
           <p className="text-lg md:text-xl text-wood-medium max-w-2xl mx-auto">
             Explore our collection of handcrafted wooden masterpieces, built with precision and care.
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={cn(
-                "px-6 py-2 rounded-full transition-all duration-300",
-                activeCategory === category
-                  ? "bg-teak-medium text-white shadow-md"
-                  : "bg-secondary text-wood-medium hover:bg-teak-light/20"
-              )}
-            >
-              {category}
-            </button>
-          ))}
+        {/* Category filters - scrollable on mobile */}
+        <div className="mb-12 overflow-x-auto pb-4 -mx-4 px-4 flex justify-start md:justify-center">
+          <div className="flex gap-2 md:gap-4 min-w-max">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className={cn(
+                  "px-4 md:px-6 py-2 rounded-full transition-all duration-300 whitespace-nowrap",
+                  activeCategory === category
+                    ? "bg-teak-medium text-white shadow-md scale-105"
+                    : "bg-white/20 backdrop-blur-sm text-wood-medium hover:bg-teak-light/20 border border-teak-light/30",
+                )}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {visibleProducts.map((product, index) => (
             <div
               key={product.id}
               ref={(el) => addToRefs(el, index)}
-              className="bg-white rounded-lg shadow-lg overflow-hidden opacity-0 group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              onClick={() => handleProductClick(product.id)}
+              className={cn(
+                "bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden opacity-0 group transition-all duration-500 cursor-pointer",
+                selectedProduct === product.id
+                  ? "ring-4 ring-teak-light shadow-[0_0_15px_rgba(194,157,102,0.5)] scale-[1.02] z-10"
+                  : "shadow-lg hover:shadow-xl hover:-translate-y-1",
+              )}
               style={{ animationDelay: `${index * 150}ms` }}
             >
               <div className="relative h-64 overflow-hidden">
                 <img
-                  src={product.image}
+                  src={product.image || "/placeholder.svg"}
                   alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className={cn(
+                    "w-full h-full object-cover transition-transform duration-700",
+                    selectedProduct === product.id ? "scale-110" : "group-hover:scale-105",
+                  )}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                <div
+                  className={cn(
+                    "absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4 transition-opacity duration-300",
+                    selectedProduct === product.id ? "opacity-100" : "opacity-0 group-hover:opacity-100",
+                  )}
+                >
                   <span className="text-white text-sm font-medium px-3 py-1 bg-teak-dark/80 backdrop-blur-sm rounded-full">
                     {product.category}
                   </span>
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-wood-dark mb-2">{product.name}</h3>
+                <h3 className="text-xl font-bold text-wood-dark mb-2 group-hover:text-teak-dark transition-colors">
+                  {product.name}
+                </h3>
                 <p className="text-wood-medium">{product.description}</p>
-                <div className="mt-4 flex justify-end">
+                <div
+                  className={cn(
+                    "mt-4 flex justify-between items-center",
+                    selectedProduct === product.id ? "opacity-100" : "opacity-0 group-hover:opacity-100",
+                    "transition-opacity duration-300",
+                  )}
+                >
+                  <div className="flex space-x-2">
+                    <span className="inline-block w-4 h-4 rounded-full bg-teak-dark"></span>
+                    <span className="inline-block w-4 h-4 rounded-full bg-teak-medium"></span>
+                    <span className="inline-block w-4 h-4 rounded-full bg-teak-light"></span>
+                  </div>
                   <button
                     className="flex items-center gap-2 text-teak-medium hover:text-teak-dark transition-colors duration-300"
                     aria-label={`Learn more about ${product.name}`}
                   >
-                    <span>Learn More</span>
-                    <Info size={16} />
+                    <span>View Details</span>
+                    <ExternalLink size={16} />
                   </button>
                 </div>
               </div>
+
+              {/* Shine effect overlay */}
+              <div
+                className={cn(
+                  "absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent opacity-0 pointer-events-none",
+                  selectedProduct === product.id ? "animate-shine" : "group-hover:animate-shine",
+                )}
+              ></div>
             </div>
           ))}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Products;
+export default Products

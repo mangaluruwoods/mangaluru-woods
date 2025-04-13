@@ -6,7 +6,7 @@ import About from "@/components/About";
 import Products from "@/components/Products";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-
+import Locations from "@/components/Locations";
 const Index = () => {
   useEffect(() => {
     // Smooth scroll behavior for all anchor links
@@ -33,7 +33,10 @@ const Index = () => {
       <div className="h-1 bg-gradient-to-r from-teak-dark via-wood-medium to-teak-dark"></div>
       
       <About />
-      
+
+      <div className="h-1 bg-gradient-to-r from-teak-dark via-wood-medium to-teak-dark"></div>
+
+      <Locations/>
       {/* Section Divider */}
       <div className="h-1 bg-gradient-to-r from-teak-dark via-wood-medium to-teak-dark"></div>
       

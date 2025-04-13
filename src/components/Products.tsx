@@ -77,8 +77,10 @@ const Products = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            // Only add the fade-in class to make visible, don't remove it
             entry.target.classList.add("animate-fade-in");
-            observer.unobserve(entry.target);
+            entry.target.style.opacity = "1"; // Ensure opacity stays at 1
+            observer.unobserve(entry.target); // Stop observing once visible
           }
         });
       },
@@ -90,12 +92,15 @@ const Products = () => {
     );
 
     if (sectionRef.current) {
+      // Set initial opacity to 1 to ensure it's visible
+      sectionRef.current.style.opacity = "1";
       observer.observe(sectionRef.current);
     }
 
     productsRef.current.forEach((ref) => {
       if (ref) {
-        ref.style.opacity = "0";
+        // Set initial opacity to 1 to ensure visibility
+        ref.style.opacity = "1";
         observer.observe(ref);
       }
     });

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from "react";
 import { ArrowDownCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -12,9 +11,13 @@ const Hero = () => {
       const heroElement = heroRef.current;
       
       if (heroElement) {
-        const opacity = 1 - (scrollY / (heroElement.offsetHeight / 1.5));
-        heroElement.style.opacity = Math.max(opacity, 0).toString();
-        heroElement.style.transform = `translateY(${scrollY * 0.3}px)`;
+        // Limit the opacity to not go below 0.3 to keep content somewhat visible
+        const opacity = Math.max(1 - (scrollY / (heroElement.offsetHeight * 1.2)), 0.3);
+        heroElement.style.opacity = opacity.toString();
+        
+        // Limit the transform to a reasonable maximum to prevent excessive movement
+        const translateY = Math.min(scrollY * 0.2, 40);
+        heroElement.style.transform = `translateY(${translateY}px)`;
       }
     };
 

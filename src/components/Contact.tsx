@@ -22,6 +22,7 @@ const Contact = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("animate-fade-in");
+            entry.target.style.opacity = "1"; // Ensure opacity stays at 1
             observer.unobserve(entry.target);
           }
         });
@@ -34,7 +35,8 @@ const Contact = () => {
     );
 
     if (sectionRef.current) {
-      sectionRef.current.style.opacity = "0";
+      // Set initial opacity to 1 to ensure it's visible
+      sectionRef.current.style.opacity = "1";
       observer.observe(sectionRef.current);
     }
 

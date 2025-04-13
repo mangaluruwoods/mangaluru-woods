@@ -28,8 +28,20 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <Hero />
+      
+      {/* Section Divider */}
+      <div className="h-1 bg-gradient-to-r from-teak-dark via-wood-medium to-teak-dark"></div>
+      
       <About />
+      
+      {/* Section Divider */}
+      <div className="h-1 bg-gradient-to-r from-teak-dark via-wood-medium to-teak-dark"></div>
+      
       <Products />
+      
+      {/* Section Divider */}
+      <div className="h-1 bg-gradient-to-r from-teak-dark via-wood-medium to-teak-dark"></div>
+      
       <Contact />
       <Footer />
     </div>

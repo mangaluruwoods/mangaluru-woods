@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from "react";
 import { Clock, Award, Users, MapPin } from "lucide-react";
 
@@ -13,7 +12,9 @@ const About = () => {
           if (entry.isIntersecting) {
             // Only add the fade-in class to make visible, don't remove it after
             entry.target.classList.add("animate-fade-in");
-            entry.target.style.opacity = "1"; // Ensure opacity stays at 1
+            if (entry.target instanceof HTMLElement) {
+              entry.target.style.opacity = "1"; // Ensure opacity stays at 1
+            }
             observer.unobserve(entry.target); // Stop observing once visible
           }
         });
@@ -26,14 +27,14 @@ const About = () => {
     );
 
     if (sectionRef.current) {
-      // Set initial opacity to 1 to make sure it's visible by default
+      // Set initial opacity to make sure it's visible by default
       sectionRef.current.style.opacity = "1";
       observer.observe(sectionRef.current);
     }
 
     staggeredRefs.current.forEach((ref, index) => {
       if (ref) {
-        // Set initial opacity to 1 to ensure visibility
+        // Set initial opacity to ensure visibility
         ref.style.opacity = "1";
         ref.style.animationDelay = `${index * 200}ms`;
         observer.observe(ref);
@@ -57,9 +58,19 @@ const About = () => {
   };
 
   return (
-    <div id="about" className="py-24 bg-secondary relative">
-      <div className="absolute inset-0 wood-pattern opacity-10"></div>
-      <div ref={sectionRef} className="container mx-auto px-4 md:px-6 opacity-0">
+    <div 
+      id="about" 
+      className="py-24 bg-secondary relative"
+      style={{
+        backgroundImage: `url('/lovable-uploads/8753207b-87fd-4a99-8f5e-ae9be16ece55.png')`,
+        backgroundSize: '300px',
+        backgroundRepeat: 'repeat',
+        backgroundAttachment: 'fixed',
+        backgroundBlendMode: 'soft-light',
+      }}
+    >
+      <div className="absolute inset-0 bg-secondary/80"></div>
+      <div ref={sectionRef} className="container mx-auto px-4 md:px-6 opacity-1 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-wood-dark mb-4">
             Our Legacy of Craftsmanship

@@ -97,12 +97,6 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    background-image: url('/lovable-uploads/8753207b-87fd-4a99-8f5e-ae9be16ece55.png');
-    background-size: 500px; /* Adjust size to control texture density */
-    background-repeat: repeat;
-    background-attachment: fixed; /* Keeps background fixed during scrolling */
-    background-blend-mode: soft-light; /* Blends texture with background color */
-    opacity: 0.9; /* Slightly reduce opacity to soften the texture */
   }
 
   h1, h2, h3, h4, h5 {

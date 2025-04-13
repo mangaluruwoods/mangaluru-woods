@@ -20,20 +20,7 @@ const products: Product[] = [
     image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=3387&auto=format&fit=crop",
     category: "Doors",
   },
-  {
-    id: 2,
-    name: "Classic Door Frame",
-    description: "Sturdy door frames made from seasoned teak wood for long-lasting durability.",
-    image: "https://images.unsplash.com/photo-1580350183266-4314b06faff0?q=80&w=3087&auto=format&fit=crop",
-    category: "Door Frames",
-  },
-  {
-    id: 3,
-    name: "Carved Entrance Door",
-    description: "Make a statement with our exquisite hand-carved entrance doors.",
-    image: "https://images.unsplash.com/photo-1628893881779-0a64975e0589?q=80&w=2070&auto=format&fit=crop",
-    category: "Doors",
-  },
+ 
   {
     id: 4,
     name: "Premium Timber",

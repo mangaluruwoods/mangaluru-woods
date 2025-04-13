@@ -22,7 +22,7 @@ const Contact = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("animate-fade-in");
-            entry.target.style.opacity = "1"; // Ensure opacity stays at 1
+            (entry.target as HTMLElement).style.opacity = "1"; // Ensure opacity stays at 1
             observer.unobserve(entry.target);
           }
         });
@@ -34,15 +34,16 @@ const Contact = () => {
       }
     );
 
-    if (sectionRef.current) {
+    const currentSectionRef = sectionRef.current;
+    if (currentSectionRef) {
       // Set initial opacity to 1 to ensure it's visible
-      sectionRef.current.style.opacity = "1";
-      observer.observe(sectionRef.current);
+      currentSectionRef.style.opacity = "1";
+      observer.observe(currentSectionRef);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (currentSectionRef) {
+        observer.unobserve(currentSectionRef);
       }
     };
   }, []);
@@ -102,8 +103,8 @@ const Contact = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-white mb-1">Phone</h4>
-                  <p className="text-teak-lightest/80">+91 98765 43210</p>
-                  <p className="text-teak-lightest/80">+91 91234 56789</p>
+                  <p className="text-teak-lightest/80">+91  7760719917</p>
+                 
                 </div>
               </div>
               
@@ -113,8 +114,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-white mb-1">Email</h4>
-                  <p className="text-teak-lightest/80">info@mangaluruwoods.com</p>
-                  <p className="text-teak-lightest/80">sales@mangaluruwoods.com</p>
+                  <p className="text-teak-lightest/80">Mangaluruwoods@gmail.com</p>
                 </div>
               </div>
               
@@ -125,8 +125,8 @@ const Contact = () => {
                 <div>
                   <h4 className="font-bold text-white mb-1">Locations</h4>
                   <p className="text-teak-lightest/80">
-                    <span className="block font-medium">Mangalore (Head Office):</span>
-                    123 Coastal Road, Mangalore, Karnataka - 575001
+                    <span className="block font-medium">Mangalore </span>
+                    {/* 123 Coastal Road, Mangalore, Karnataka - 575001 */}
                   </p>
                   <p className="text-teak-lightest/80 mt-2">
                     <span className="block font-medium">Other Branches:</span>

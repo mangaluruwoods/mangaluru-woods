@@ -26,7 +26,7 @@ const Footer = () => {
               <span className="text-teak-medium">Mangaluru</span> Woods
             </h3>
             <p className="text-teak-lightest/80 mb-4">
-              Transforming Trees Into Masterpieces since 1990. Premium quality wooden doors, 
+              Transforming Trees Into Masterpieces since 2023. Premium quality wooden doors, 
               door frames and timber supplies.
             </p>
             <div className="flex space-x-4">

@@ -17,29 +17,36 @@ const products: Product[] = [
     id: 1,
     name: "Premier Teak Door",
     description: "Handcrafted solid teak wood door with intricate carvings and premium finish.",
-    image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=3387&auto=format&fit=crop",
+    image: "/images/products/door1.jpeg",
     category: "Doors",
+  },
+  {
+    id: 2,
+    name: "Door Frames",
+    description: "Sturdy and stylish door frames made from high-quality wood.",
+    image: "/images/products/doorframe1.jpeg",
+    category: "Door Frames",
+  },
+  {
+    id: 3,
+    name: "PlyWoods",
+    description: "Versatile plywood sheets for various applications, from furniture to flooring.",
+    image: "/images/plyWood.jpg",
+    category: "Plywoods",
   },
  
   {
     id: 4,
-    name: "Premium Timber",
-    description: "High-quality timber supplies for all your construction and carpentry needs.",
+    name: "Customisation",
+    description: "Tailored wooden products to fit your unique style and requirements.",
     image: "https://images.unsplash.com/photo-1595515106864-077d30192c56?q=80&w=2073&auto=format&fit=crop",
-    category: "Timber",
+    category: "Customisation",
   },
   {
     id: 5,
     name: "Contemporary Sliding Door",
     description: "Modern sliding doors that combine style with functionality.",
-    image: "https://images.unsplash.com/photo-1608666052881-a2257bd73dd8?q=80&w=2070&auto=format&fit=crop",
-    category: "Doors",
-  },
-  {
-    id: 6,
-    name: "Custom Door Solutions",
-    description: "Bespoke door designs tailored to your specific requirements and space.",
-    image: "https://images.unsplash.com/photo-1510928486644-f1b75b578f20?q=80&w=2071&auto=format&fit=crop",
+    image: "/images/products/door2.jpeg",
     category: "Doors",
   },
 ]
@@ -215,7 +222,7 @@ const Products = () => {
                     className="flex items-center gap-2 text-teak-medium hover:text-teak-dark transition-colors duration-300"
                     aria-label={`Learn more about ${product.name}`}
                   >
-                    <span>View Details</span>
+                    {/* <span>View Details</span> */}
                     <ExternalLink size={16} />
                   </button>
                 </div>

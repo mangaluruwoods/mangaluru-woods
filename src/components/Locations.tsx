@@ -21,7 +21,7 @@ const locations: Location[] = [
     address: "123 Coastal Road, Mangalore, Karnataka 575001",
     phone: "+91 9876543210",
     hours: "Mon-Sat: 9:00 AM - 7:00 PM",
-    image: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=2070&auto=format&fit=crop",
+    image: "/images/mangalore.jpeg",
     mapUrl: "https://maps.google.com",
   },
   {
@@ -48,7 +48,7 @@ const locations: Location[] = [
     address: "101 Marine Drive, Mumbai, Maharashtra 400020",
     phone: "+91 9876543213",
     hours: "Mon-Sat: 10:00 AM - 8:00 PM",
-    image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=2070&auto=format&fit=crop",
+    image: "/images/mumbai.jpeg",
     mapUrl: "https://maps.google.com",
   },
 ]

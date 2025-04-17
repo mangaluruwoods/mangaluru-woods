@@ -10,14 +10,23 @@ const About = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0)
 
   const milestones = [
-    { year: "2023", title: "Our Beginning", description: "Started as a small family workshop in Mangaluru" },
+    {
+      year: "2023",
+      title: "A Story of Excellence",
+      description: "Started as a small family workshop in Mangaluru",
+    },
     {
       year: "2024",
-      title: "Innovation",
-      description: "Introduced modern designs while preserving traditional craftsmanship",
+      title: "Trade in Mangaluru",
+      description: "Established strong local trade, gaining trust across coastal Karnataka",
     },
-    { year: "2025", title: "Nationwide Presence", description: "Expanded to major cities across India" },
-  ]
+    {
+      year: "2025",
+      title: "Workshop Mumbai",
+      description: "Expanded operations with a new workshop set up in Mumbai",
+    },
+  ];
+  
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -87,7 +96,7 @@ const About = () => {
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1620236104164-d2e71398f8b8?q=80&w=2069&auto=format&fit=crop')",
+            "url('/images/aboutustree.webp')",
           backgroundAttachment: "fixed",
         }}
       ></div>

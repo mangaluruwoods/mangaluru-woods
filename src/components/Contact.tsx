@@ -125,12 +125,12 @@ const Contact = () => {
                 <div>
                   <h4 className="font-bold text-white mb-1">Locations</h4>
                   <p className="text-teak-lightest/80">
-                    <span className="block font-medium">Mangalore </span>
+                    {/* <span className="block font-medium">Mangalore </span> */}
                     {/* 123 Coastal Road, Mangalore, Karnataka - 575001 */}
                   </p>
                   <p className="text-teak-lightest/80 mt-2">
-                    <span className="block font-medium">Other Branches:</span>
-                    Bangalore | Hyderabad | Mumbai
+                    {/* <span className="block font-medium">Other Branches:</span> */}
+                   Mangalore| Bangalore | Hyderabad | Mumbai
                   </p>
                 </div>
               </div>

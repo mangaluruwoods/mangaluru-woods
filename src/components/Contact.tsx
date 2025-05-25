@@ -53,28 +53,46 @@ const Contact = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+
+  try {
+    // console.log("hititing be")
+    const response = await fetch('https://mangaluru-woods-be.onrender.com/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
       setFormSubmitted(true);
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
-      });
-      
+      setFormData({ name: "", email: "", phone: "", message: "" });
       toast({
         title: "Message Sent",
         description: "Thank you for reaching out. We'll get back to you soon!",
         duration: 5000,
       });
-    }, 1500);
-  };
+    } else {
+      toast({
+        title: "Message Failed",
+        description: data?.error || "Something went wrong.",
+        variant: "destructive",
+      });
+    }
+  } catch (err) {
+    toast({
+      title: "Error",
+      description: "Failed to send message. Please try again later.",
+      variant: "destructive",
+    });
+  }
+
+  setIsSubmitting(false);
+};
+
 
   return (
     <div id="contact" className="py-24 bg-wood-darkest text-white relative">

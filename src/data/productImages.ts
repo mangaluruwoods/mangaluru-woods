@@ -62,7 +62,7 @@ export const productImages: Record<string, ProductImage[]> = {
     },
     {
       id: "wpc-2",
-      url: "/images/products/wpc-doors/wpc2.png",
+      url: "/images/products/wpc-doors/wpc0.jpeg",
       title: "WPC Doors",
       description: "Modern design with wood texture finish",
       category: "wpc-doors",

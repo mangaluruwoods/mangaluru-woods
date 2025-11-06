@@ -25,14 +25,13 @@ export const productCategories: ProductCategory[] = [
       Thickness: "32mm - 45mm",
       "Standard Sizes": "7' x 3', 7' x 3.5', 8' x 4'",
       "Finish Options": "Natural Polish, Melamine, PU Coating",
-      Warranty: "10 Years on Wood Quality",
     },
   },
   {
     id: "wpc-doors",
     name: "WPC DOORS",
     description: "Waterproof, termite-resistant WPC door solutions",
-    image: "/images/products/door2.jpeg",
+    image: "/images/products/wpc-doors/wpc0.jpeg",
     subcategories: ["WPC Doors", "WPC Door Frames"],
     hasCatalogue: true,
     catalogueUrl: "/catalogues/wpc-doors.pdf",
@@ -55,7 +54,6 @@ export const productCategories: ProductCategory[] = [
       "Standard Sizes": "81' x 27', 81' x 30', 81' x 32', 81' x 33'",
       "Finish Options": "Laminated, Membrane, Veneer",
       "Available Colors": "Ivory, White",
-      Warranty: "15 Years",
     },
   },
   {
@@ -81,7 +79,6 @@ export const productCategories: ProductCategory[] = [
       Thickness: "30mm - 35mm",
       "Standard Sizes": "7' x 3', 7' x 3.5', 8' x 4'",
       "Finish Options": "Laminate, Membrane, Microcoat",
-      Warranty: "5 Years",
     },
   },
   {
@@ -136,7 +133,6 @@ export const productCategories: ProductCategory[] = [
       Materials: "Teak, Plywood, WPC, Veneers",
       Finish: "Polish, Laminate, Veneer",
       Design: "Traditional, Modern, Contemporary",
-      Consultation: "Free Design Consultation",
     },
   },
 ];

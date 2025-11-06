@@ -1,603 +1,273 @@
-"use client"
+"use client";
 
-import { cn } from "@/lib/utils"
-import { ExternalLink } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
-
-interface Product {
-  id: number
-  name: string
-  description: string
-  image: string
-  category: string
-}
-
-const products: Product[] = [
-  {
-    id: 1,
-    name: "Premier Teak Door",
-    description: "Handcrafted solid teak wood door with intricate carvings and premium finish.",
-    image: "/images/products/door1.jpeg",
-    category: "Doors",
-  },
-  {
-    id: 2,
-    name: "Door Frames",
-    description: "Sturdy and stylish door frames made from high-quality wood.",
-    image: "/images/products/doorframe1.jpeg",
-    category: "Door Frames",
-  },
-  {
-    id: 3,
-    name: "PlyWoods",
-    description: "Versatile plywood sheets for various applications, from furniture to flooring.",
-    image: "/images/plyWood.jpg",
-    category: "Plywoods",
-  },
-
-  {
-    id: 4,
-    name: "Customisation",
-    description: "Tailored wooden products to fit your unique style and requirements.",
-    image: "https://images.unsplash.com/photo-1595515106864-077d30192c56?q=80&w=2073&auto=format&fit=crop",
-    category: "Customisation",
-  },
-  {
-    id: 5,
-    name: "Teak Door",
-    description: "",
-    image: "/images/products/door2.jpeg",
-    category: "Doors",
-  },
-  {
-    id: 6,
-    name: "Teak Door",
-    description: "",
-    image: "/images/products/door3.jpeg",
-    category: "Doors",
-  },
-  {
-    id: 10,
-    name: "Teak Door",
-    description: "",
-    image: "/images/products/door4.jpeg",
-    category: "Doors",
-  },
-  {
-    id: 7,
-    name: "Teak Door",
-    description: "",
-    image: "/images/products/door5.jpeg",
-    category: "Doors",
-  },
-  {
-    id: 8,
-    name: "Teak Door",
-    description: "",
-    image: "/images/products/door6.jpeg",
-    category: "Doors",
-  },
-  {
-    id: 9,
-    name: "Teak Door",
-    description: "",
-    image: "/images/products/door7.jpeg",
-    category: "Doors",
-  },
-  {
-    id: 11,
-    name: "Teak Door",
-    description: "",
-    image: "/images/products/door8.jpeg",
-    category: "Doors",
-  },
-]
+import { useState } from "react";
+import {
+  FileText,
+  X,
+  ChevronRight,
+  Package,
+  BookOpen,
+  Hammer,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom"; // or Next.js router
+import { productCategories } from "../data/productCategories";
 
 const Products = () => {
-  const [activeCategory, setActiveCategory] = useState<string>("All")
-  const [visibleProducts, setVisibleProducts] = useState<Product[]>(products)
-  const [selectedProduct, setSelectedProduct] = useState<number | null>(null)
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const productsRef = useRef<(HTMLDivElement | null)[]>([])
+  const [showPdfModal, setShowPdfModal] = useState(false);
+  const [currentPdfUrl, setCurrentPdfUrl] = useState("");
+  const navigate = useNavigate(); // For React Router, use: const router = useRouter() for Next.js
 
-  const categories = ["All", ...new Set(products.map((product) => product.category))]
+  const openCatalogue = (url: string) => {
+    setCurrentPdfUrl(url);
+    setShowPdfModal(true);
+  };
 
-  useEffect(() => {
-    if (activeCategory === "All") {
-      // Show only one product per category for "All" view
-      const uniqueCategories = [...new Set(products.map((product) => product.category))]
-      const representativeProducts = uniqueCategories
-        .map((category) => products.find((product) => product.category === category))
-        .filter(Boolean) as Product[]
-      setVisibleProducts(representativeProducts)
-    } else {
-      setVisibleProducts(products.filter((product) => product.category === activeCategory))
-    }
-  }, [activeCategory])
+  const closeCatalogue = () => {
+    setShowPdfModal(false);
+    setCurrentPdfUrl("");
+  };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-fade-in")
-            if (entry.target instanceof HTMLElement) {
-              entry.target.style.opacity = "1"
-            }
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      {
-        root: null,
-        rootMargin: "0px",
-        threshold: 0.1,
-      },
-    )
-
-    const sectionNode = sectionRef.current
-    const productNodes = [...productsRef.current]
-
-    if (sectionNode) {
-      sectionNode.style.opacity = "1"
-      observer.observe(sectionNode)
-    }
-
-    productNodes.forEach((ref) => {
-      if (ref) {
-        ref.style.opacity = "1"
-        observer.observe(ref)
-      }
-    })
-
-    return () => {
-      if (sectionNode) {
-        observer.unobserve(sectionNode)
-      }
-      productNodes.forEach((ref) => {
-        if (ref) observer.unobserve(ref)
-      })
-    }
-  }, [visibleProducts])
-
-  const addToRefs = (el: HTMLDivElement | null, index: number) => {
-    if (el && !productsRef.current.includes(el)) {
-      productsRef.current[index] = el
-    }
-  }
-
-  const handleProductClick = (id: number) => {
-    setSelectedProduct(selectedProduct === id ? null : id)
-  }
+  const navigateToCategory = (categoryId: string) => {
+    navigate(`/products/${categoryId}`); // For Next.js: router.push(`/products/${categoryId}`)
+  };
 
   return (
-    <div id="products" className="py-24 relative">
-      {/* Wood texture background */}
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-10"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1606041008023-472dfb5e530f?q=80&w=2033&auto=format&fit=crop')",
-          backgroundAttachment: "fixed",
-        }}
-      ></div>
+    <div
+      id="products"
+      className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50"
+    >
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-r from-amber-900 via-amber-800 to-orange-900 text-white py-16 md:py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1606041008023-472dfb5e530f?q=80&w=2033')] opacity-10 bg-cover bg-center"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent"></div>
 
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
-
-      <div ref={sectionRef} className="container mx-auto px-4 md:px-6 opacity-0 animate-fade-in relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-wood-dark mb-4">
-            {activeCategory === "All" ? "Our Premium Products" : `${activeCategory} Collection`}
-          </h2>
-          <div className="h-0.5 w-24 bg-gradient-to-r from-teak-light to-teak-dark mx-auto mb-6"></div>
-          <p className="text-lg md:text-xl text-wood-medium max-w-2xl mx-auto">
-            {activeCategory === "All"
-              ? "Explore our collection of handcrafted wooden masterpieces, built with precision and care."
-              : `Discover our premium ${activeCategory.toLowerCase()} crafted with traditional techniques and modern precision.`}
-          </p>
-        </div>
-
-        {/* Category filters - scrollable on mobile */}
-        <div className="mb-12 overflow-x-auto pb-4 -mx-4 px-4 flex justify-start md:justify-center">
-          <div className="flex gap-2 md:gap-4 min-w-max">
-            {categories.map((category) => {
-              const categoryCount =
-                category === "All"
-                  ? [...new Set(products.map((p) => p.category))].length
-                  : products.filter((p) => p.category === category).length
-
-              return (
-                <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
-                  className={cn(
-                    "px-4 md:px-6 py-2 rounded-full transition-all duration-300 whitespace-nowrap relative",
-                    activeCategory === category
-                      ? "bg-gradient-to-r from-teak-medium to-teak-dark text-white shadow-lg scale-105 transform"
-                      : "bg-white/30 backdrop-blur-sm text-wood-medium hover:bg-teak-light/30 border border-teak-light/40 hover:scale-102",
-                  )}
-                >
-                  <span className="flex items-center gap-2">
-                    {category}
-                    {/* <span
-                      className={cn(
-                        "text-xs px-2 py-0.5 rounded-full",
-                        activeCategory === category ? "bg-white/20 text-white" : "bg-teak-light/20 text-teak-dark",
-                      )}
-                    >
-                      {categoryCount}
-                    </span> */}
-                  </span>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* {activeCategory === "All" && (
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-teak-light/20 backdrop-blur-sm rounded-full border border-teak-light/30">
-              <div className="w-2 h-2 bg-teak-medium rounded-full animate-pulse"></div>
-              <span className="text-sm text-wood-medium">Showing one representative product from each category</span>
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="text-center max-w-4xl mx-auto">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
+              Our Premium Products
+            </h1>
+            <p className="text-lg md:text-xl text-amber-100 mb-8">
+              Discover excellence in every grain. From solid teak to modern WPC
+              solutions, we bring you the finest wood products crafted with
+              precision and care.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 text-sm md:text-base">
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+                <Package className="w-5 h-5" />
+                <span>5 Product Categories</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+                <FileText className="w-5 h-5" />
+                <span>Digital Catalogues</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+                <Hammer className="w-5 h-5" />
+                <span>Custom Solutions</span>
+              </div>
             </div>
           </div>
-        )} */}
+        </div>
+      </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {visibleProducts.map((product, index) => (
+      {/* Product Categories Grid */}
+      <div className="container mx-auto px-4 md:px-6 py-12 md:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {productCategories.map((category, index) => (
             <div
-              key={product.id}
-              ref={(el) => addToRefs(el, index)}
-              onClick={() => handleProductClick(product.id)}
-              className={cn(
-                "bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden opacity-0 group transition-all duration-500 cursor-pointer",
-                selectedProduct === product.id
-                  ? "ring-4 ring-teak-light shadow-[0_0_15px_rgba(194,157,102,0.5)] scale-[1.02] z-10"
-                  : "shadow-lg hover:shadow-xl hover:-translate-y-1",
-              )}
-              style={{ animationDelay: `${index * 150}ms` }}
+              key={category.id}
+              className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-amber-100 hover:border-amber-300 hover:-translate-y-2"
+              style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className="relative h-64 overflow-hidden">
+              {/* Image Container */}
+              <div className="relative h-64 md:h-72 overflow-hidden bg-gradient-to-br from-amber-100 to-orange-100">
                 <img
-                  src={product.image || "/placeholder.svg"}
-                  alt={product.name}
-                  className={cn(
-                    "w-full h-full object-cover transition-transform duration-700",
-                    selectedProduct === product.id ? "scale-110" : "group-hover:scale-105",
-                  )}
+                  src={category.image}
+                  alt={category.name}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
-                <div
-                  className={cn(
-                    "absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4 transition-opacity duration-300",
-                    selectedProduct === product.id ? "opacity-100" : "opacity-0 group-hover:opacity-100",
-                  )}
-                >
-                  <span className="text-white text-sm font-medium px-3 py-1 bg-teak-dark/80 backdrop-blur-sm rounded-full">
-                    {product.category}
-                  </span>
-                </div>
-              </div>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-xl font-bold text-wood-dark group-hover:text-teak-dark transition-colors">
-                    {product.name}
-                  </h3>
-                  {activeCategory === "All" && (
-                    <span className="text-xs px-2 py-1 bg-teak-light/20 text-teak-dark rounded-full">
-                      {product.category}
-                    </span>
-                  )}
-                </div>
-                <p className="text-wood-medium mb-4">{product.description}</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
 
-                {activeCategory === "All" && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setActiveCategory(product.category)
-                    }}
-                    className="w-full py-2 px-4 bg-gradient-to-r from-teak-light to-teak-medium text-white rounded-lg hover:from-teak-medium hover:to-teak-dark transition-all duration-300 transform hover:scale-105 shadow-md"
-                  >
-                    View All {product.category}
-                  </button>
-                )}
+                {/* Category Icon Badge */}
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-full w-12 h-12 flex items-center justify-center text-2xl shadow-lg">
+                  {category.icon}
+                </div>
 
-                <div
-                  className={cn(
-                    "mt-4 flex justify-between items-center",
-                    selectedProduct === product.id ? "opacity-100" : "opacity-0 group-hover:opacity-100",
-                    "transition-opacity duration-300",
-                  )}
-                >
-                  <div className="flex space-x-2">
-                    <span className="inline-block w-4 h-4 rounded-full bg-teak-dark shadow-sm"></span>
-                    <span className="inline-block w-4 h-4 rounded-full bg-teak-medium shadow-sm"></span>
-                    <span className="inline-block w-4 h-4 rounded-full bg-teak-light shadow-sm"></span>
+                {/* Catalogue Badge */}
+                {category.hasCatalogue && (
+                  <div className="absolute top-4 right-4 bg-green-500 text-white text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1 shadow-lg">
+                    <FileText className="w-3 h-3" />
+                    Catalogue Available
                   </div>
-                  <button
-                    className="flex items-center gap-2 text-teak-medium hover:text-teak-dark transition-colors duration-300 hover:scale-110 transform"
-                    aria-label={`Learn more about ${product.name}`}
-                  >
-                    <ExternalLink size={16} />
-                  </button>
-                </div>
+                )}
               </div>
 
-              {/* Shine effect overlay */}
-              <div
-                className={cn(
-                  "absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent opacity-0 pointer-events-none",
-                  selectedProduct === product.id ? "animate-shine" : "group-hover:animate-shine",
+              {/* Content */}
+              <div className="p-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-amber-700 transition-colors">
+                  {category.name}
+                </h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  {category.description}
+                </p>
+
+                {/* Subcategories */}
+                {category.subcategories.length > 0 && (
+                  <div className="mb-4">
+                    <p className="text-xs font-semibold text-gray-500 uppercase mb-2 flex items-center gap-1">
+                      <ChevronRight className="w-3 h-3" />
+                      Includes:
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {category.subcategories.map((sub, idx) => (
+                        <span
+                          key={idx}
+                          className="text-xs bg-amber-50 text-amber-800 px-3 py-1 rounded-full border border-amber-200"
+                        >
+                          {sub}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 )}
-              ></div>
+
+                {/* Custom Note for Furniture */}
+                {category.customNote && (
+                  <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-sm text-blue-800 flex items-start gap-2">
+                      <Hammer className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <span>{category.customNote}</span>
+                    </p>
+                  </div>
+                )}
+
+                {/* Action Buttons */}
+                <div className="flex flex-col gap-2 mt-6">
+                  {category.hasCatalogue ? (
+                    <>
+                      <button
+                        onClick={() => openCatalogue(category.catalogueUrl!)}
+                        className="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+                      >
+                        <BookOpen className="w-5 h-5" />
+                        View Catalogue
+                      </button>
+                      <button
+                        onClick={() => navigateToCategory(category.id)}
+                        className="w-full bg-white text-amber-700 py-3 px-4 rounded-lg font-semibold border-2 border-amber-600 hover:bg-amber-50 transition-all duration-300 flex items-center justify-center gap-2"
+                      >
+                        <Package className="w-5 h-5" />
+                        Explore Products
+                      </button>
+                    </>
+                  ) : category.hasCatalogue === false &&
+                    !category.customNote ? (
+                    <>
+                      <div className="w-full bg-gray-100 text-gray-500 py-3 px-4 rounded-lg font-semibold border-2 border-gray-200 flex items-center justify-center gap-2 cursor-not-allowed">
+                        <FileText className="w-5 h-5" />
+                        Catalogue Coming Soon
+                      </div>
+                      <button
+                        onClick={() => navigateToCategory(category.id)}
+                        className="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+                      >
+                        <Package className="w-5 h-5" />
+                        Explore Products
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => navigateToCategory(category.id)}
+                      className="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+                    >
+                      <Hammer className="w-5 h-5" />
+                      View Custom Options
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           ))}
         </div>
       </div>
-      {activeCategory !== "All" && (
-        <div className="fixed bottom-8 right-8 z-20">
-          <button
-            onClick={() => setActiveCategory("All")}
-            className="bg-gradient-to-r from-teak-medium to-teak-dark text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110"
-            aria-label="View all categories"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
+
+      {/* PDF Modal - Same as before */}
+      {showPdfModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl h-[90vh] flex flex-col overflow-hidden">
+            <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-200 bg-gradient-to-r from-amber-50 to-orange-50">
+              <div className="flex items-center gap-3">
+                <div className="bg-amber-600 text-white p-2 rounded-lg">
+                  <FileText className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-900">
+                    Product Catalogue
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    View detailed specifications and designs
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={closeCatalogue}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 group"
+              >
+                <X className="w-6 h-6 text-gray-600 group-hover:text-gray-900" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-hidden bg-gray-100">
+              <iframe
+                src={currentPdfUrl}
+                className="w-full h-full border-0"
+                title="Product Catalogue PDF"
+              />
+            </div>
+            <div className="p-4 md:p-6 border-t border-gray-200 bg-gray-50 flex flex-col sm:flex-row gap-3 justify-between items-center">
+              <p className="text-sm text-gray-600">
+                Having trouble viewing?{" "}
+                <a
+                  href={currentPdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-amber-600 hover:text-amber-700 font-semibold underline"
+                >
+                  Download PDF
+                </a>
+              </p>
+              <button
+                onClick={closeCatalogue}
+                className="w-full sm:w-auto bg-amber-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-amber-700 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
         </div>
       )}
+
+      {/* CTA Section */}
+      <div className="bg-gradient-to-r from-amber-900 via-amber-800 to-orange-900 text-white py-16 md:py-20">
+        <div className="container mx-auto px-4 md:px-6 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Can't Find What You're Looking For?
+          </h2>
+          <p className="text-lg md:text-xl text-amber-100 mb-8 max-w-2xl mx-auto">
+            We specialize in custom solutions. Let us know your requirements,
+            and our experts will help you find the perfect wood products for
+            your project.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="bg-white text-amber-900 px-8 py-4 rounded-lg font-semibold hover:bg-amber-50 transition-all shadow-lg">
+              Contact Our Team
+            </button>
+            <button className="bg-transparent text-white border-2 border-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition-all">
+              Request a Quote
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Products
-
-
-// "use client"
-
-// import { cn } from "@/lib/utils"
-// import { ExternalLink } from "lucide-react"
-// import { useEffect, useRef, useState } from "react"
-
-// interface Product {
-//   id: number
-//   name: string
-//   description: string
-//   image: string
-//   category: string
-// }
-
-// const products: Product[] = [
-//   {
-//     id: 1,
-//     name: "Premier Teak Door",
-//     description: "Handcrafted solid teak wood door with intricate carvings and premium finish.",
-//     image: "/images/products/door1.jpeg",
-//     category: "Doors",
-//   },
-//   {
-//     id: 2,
-//     name: "Door Frames",
-//     description: "Sturdy and stylish door frames made from high-quality wood.",
-//     image: "/images/products/doorframe1.jpeg",
-//     category: "Door Frames",
-//   },
-//   {
-//     id: 3,
-//     name: "PlyWoods",
-//     description: "Versatile plywood sheets for various applications, from furniture to flooring.",
-//     image: "/images/plyWood.jpg",
-//     category: "Plywoods",
-//   },
- 
-//   {
-//     id: 4,
-//     name: "Customisation",
-//     description: "Tailored wooden products to fit your unique style and requirements.",
-//     image: "https://images.unsplash.com/photo-1595515106864-077d30192c56?q=80&w=2073&auto=format&fit=crop",
-//     category: "Customisation",
-//   },
-//   {
-//     id: 5,
-//     name: "Contemporary Sliding Door",
-//     description: "Modern sliding doors that combine style with functionality.",
-//     image: "/images/products/door2.jpeg",
-//     category: "Doors",
-//   },
-// ]
-
-// const Products = () => {
-//   const [activeCategory, setActiveCategory] = useState<string>("All")
-//   const [visibleProducts, setVisibleProducts] = useState<Product[]>(products)
-//   const [selectedProduct, setSelectedProduct] = useState<number | null>(null)
-//   const sectionRef = useRef<HTMLDivElement>(null)
-//   const productsRef = useRef<(HTMLDivElement | null)[]>([])
-
-//   const categories = ["All", ...new Set(products.map((product) => product.category))]
-
-//   useEffect(() => {
-//     if (activeCategory === "All") {
-//       setVisibleProducts(products)
-//     } else {
-//       setVisibleProducts(products.filter((product) => product.category === activeCategory))
-//     }
-//   }, [activeCategory])
-
-//   useEffect(() => {
-//     const observer = new IntersectionObserver(
-//       (entries) => {
-//         entries.forEach((entry) => {
-//           if (entry.isIntersecting) {
-//             entry.target.classList.add("animate-fade-in")
-//             if (entry.target instanceof HTMLElement) {
-//               entry.target.style.opacity = "1"
-//             }
-//             observer.unobserve(entry.target)
-//           }
-//         })
-//       },
-//       {
-//         root: null,
-//         rootMargin: "0px",
-//         threshold: 0.1,
-//       },
-//     )
-
-//     const sectionNode = sectionRef.current
-//     const productNodes = [...productsRef.current]
-
-//     if (sectionNode) {
-//       sectionNode.style.opacity = "1"
-//       observer.observe(sectionNode)
-//     }
-
-//     productNodes.forEach((ref) => {
-//       if (ref) {
-//         ref.style.opacity = "1"
-//         observer.observe(ref)
-//       }
-//     })
-
-//     return () => {
-//       if (sectionNode) {
-//         observer.unobserve(sectionNode)
-//       }
-//       productNodes.forEach((ref) => {
-//         if (ref) observer.unobserve(ref)
-//       })
-//     }
-//   }, [visibleProducts])
-
-//   const addToRefs = (el: HTMLDivElement | null, index: number) => {
-//     if (el && !productsRef.current.includes(el)) {
-//       productsRef.current[index] = el
-//     }
-//   }
-
-//   const handleProductClick = (id: number) => {
-//     setSelectedProduct(selectedProduct === id ? null : id)
-//   }
-
-//   return (
-//     <div id="products" className="py-24 relative">
-//       {/* Wood texture background */}
-//       <div
-//         className="absolute inset-0 bg-cover bg-center opacity-10"
-//         style={{
-//           backgroundImage:
-//             "url('https://images.unsplash.com/photo-1606041008023-472dfb5e530f?q=80&w=2033&auto=format&fit=crop')",
-//           backgroundAttachment: "fixed",
-//         }}
-//       ></div>
-
-//       {/* Gradient overlay */}
-//       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
-
-//       <div ref={sectionRef} className="container mx-auto px-4 md:px-6 opacity-0 animate-fade-in relative z-10">
-//         <div className="text-center mb-16">
-//           <h2 className="text-3xl md:text-4xl font-bold text-wood-dark mb-4">Our Premium Products</h2>
-//           <div className="h-0.5 w-24 bg-teak-medium mx-auto mb-6"></div>
-//           <p className="text-lg md:text-xl text-wood-medium max-w-2xl mx-auto">
-//             Explore our collection of handcrafted wooden masterpieces, built with precision and care.
-//           </p>
-//         </div>
-
-//         {/* Category filters - scrollable on mobile */}
-//         <div className="mb-12 overflow-x-auto pb-4 -mx-4 px-4 flex justify-start md:justify-center">
-//           <div className="flex gap-2 md:gap-4 min-w-max">
-//             {categories.map((category) => (
-//               <button
-//                 key={category}
-//                 onClick={() => setActiveCategory(category)}
-//                 className={cn(
-//                   "px-4 md:px-6 py-2 rounded-full transition-all duration-300 whitespace-nowrap",
-//                   activeCategory === category
-//                     ? "bg-teak-medium text-white shadow-md scale-105"
-//                     : "bg-white/20 backdrop-blur-sm text-wood-medium hover:bg-teak-light/20 border border-teak-light/30",
-//                 )}
-//               >
-//                 {category}
-//               </button>
-//             ))}
-//           </div>
-//         </div>
-
-//         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-//           {visibleProducts.map((product, index) => (
-//             <div
-//               key={product.id}
-//               ref={(el) => addToRefs(el, index)}
-//               onClick={() => handleProductClick(product.id)}
-//               className={cn(
-//                 "bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden opacity-0 group transition-all duration-500 cursor-pointer",
-//                 selectedProduct === product.id
-//                   ? "ring-4 ring-teak-light shadow-[0_0_15px_rgba(194,157,102,0.5)] scale-[1.02] z-10"
-//                   : "shadow-lg hover:shadow-xl hover:-translate-y-1",
-//               )}
-//               style={{ animationDelay: `${index * 150}ms` }}
-//             >
-//               <div className="relative h-64 overflow-hidden">
-//                 <img
-//                   src={product.image || "/placeholder.svg"}
-//                   alt={product.name}
-//                   className={cn(
-//                     "w-full h-full object-cover transition-transform duration-700",
-//                     selectedProduct === product.id ? "scale-110" : "group-hover:scale-105",
-//                   )}
-//                 />
-//                 <div
-//                   className={cn(
-//                     "absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4 transition-opacity duration-300",
-//                     selectedProduct === product.id ? "opacity-100" : "opacity-0 group-hover:opacity-100",
-//                   )}
-//                 >
-//                   <span className="text-white text-sm font-medium px-3 py-1 bg-teak-dark/80 backdrop-blur-sm rounded-full">
-//                     {product.category}
-//                   </span>
-//                 </div>
-//               </div>
-//               <div className="p-6">
-//                 <h3 className="text-xl font-bold text-wood-dark mb-2 group-hover:text-teak-dark transition-colors">
-//                   {product.name}
-//                 </h3>
-//                 <p className="text-wood-medium">{product.description}</p>
-//                 <div
-//                   className={cn(
-//                     "mt-4 flex justify-between items-center",
-//                     selectedProduct === product.id ? "opacity-100" : "opacity-0 group-hover:opacity-100",
-//                     "transition-opacity duration-300",
-//                   )}
-//                 >
-//                   <div className="flex space-x-2">
-//                     <span className="inline-block w-4 h-4 rounded-full bg-teak-dark"></span>
-//                     <span className="inline-block w-4 h-4 rounded-full bg-teak-medium"></span>
-//                     <span className="inline-block w-4 h-4 rounded-full bg-teak-light"></span>
-//                   </div>
-//                   <button
-//                     className="flex items-center gap-2 text-teak-medium hover:text-teak-dark transition-colors duration-300"
-//                     aria-label={`Learn more about ${product.name}`}
-//                   >
-//                     {/* <span>View Details</span> */}
-//                     <ExternalLink size={16} />
-//                   </button>
-//                 </div>
-//               </div>
-
-//               {/* Shine effect overlay */}
-//               <div
-//                 className={cn(
-//                   "absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent opacity-0 pointer-events-none",
-//                   selectedProduct === product.id ? "animate-shine" : "group-hover:animate-shine",
-//                 )}
-//               ></div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default Products
+export default Products;

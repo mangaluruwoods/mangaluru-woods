@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import { Phone, Mail, MapPin, Send, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -8,7 +7,7 @@ const Contact = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -48,58 +47,66 @@ const Contact = () => {
     };
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setIsSubmitting(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
-  try {
-    // console.log("hititing be")
-    const response = await fetch('https://mangaluru-woods-be.onrender.com/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
+    try {
+      // console.log("hititing be")
+      const response = await fetch(
+        "https://mangaluru-woods-be.onrender.com/api/contact",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      setFormSubmitted(true);
-      setFormData({ name: "", email: "", phone: "", message: "" });
+      if (response.ok) {
+        setFormSubmitted(true);
+        setFormData({ name: "", email: "", phone: "", message: "" });
+        toast({
+          title: "Message Sent",
+          description:
+            "Thank you for reaching out. We'll get back to you soon!",
+          duration: 5000,
+        });
+      } else {
+        toast({
+          title: "Message Failed",
+          description: data?.error || "Something went wrong.",
+          variant: "destructive",
+        });
+      }
+    } catch (err) {
       toast({
-        title: "Message Sent",
-        description: "Thank you for reaching out. We'll get back to you soon!",
-        duration: 5000,
-      });
-    } else {
-      toast({
-        title: "Message Failed",
-        description: data?.error || "Something went wrong.",
+        title: "Error",
+        description: "Failed to send message. Please try again later.",
         variant: "destructive",
       });
     }
-  } catch (err) {
-    toast({
-      title: "Error",
-      description: "Failed to send message. Please try again later.",
-      variant: "destructive",
-    });
-  }
 
-  setIsSubmitting(false);
-};
-
+    setIsSubmitting(false);
+  };
 
   return (
     <div id="contact" className="py-24 bg-wood-darkest text-white relative">
       <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1426604966848-d7adac402bff')] bg-cover bg-center bg-fixed opacity-10"></div>
       <div className="absolute inset-0 bg-gradient-to-b from-wood-darkest/90 to-wood-darkest/95"></div>
-      
-      <div ref={sectionRef} className="container mx-auto px-4 md:px-6 relative z-10">
+
+      <div
+        ref={sectionRef}
+        className="container mx-auto px-4 md:px-6 relative z-10"
+      >
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-teak-light mb-4">
             Get In Touch
@@ -112,8 +119,10 @@ const handleSubmit = async (e: React.FormEvent) => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div className="bg-wood-dark/40 backdrop-blur-sm p-8 rounded-lg shadow-xl">
-            <h3 className="text-2xl font-bold mb-6 text-teak-light">Contact Information</h3>
-            
+            <h3 className="text-2xl font-bold mb-6 text-teak-light">
+              Contact Information
+            </h3>
+
             <div className="space-y-6">
               <div className="flex items-start gap-4">
                 <div className="bg-teak-medium rounded-full p-3 shrink-0">
@@ -121,21 +130,22 @@ const handleSubmit = async (e: React.FormEvent) => {
                 </div>
                 <div>
                   <h4 className="font-bold text-white mb-1">Phone</h4>
-                  <p className="text-teak-lightest/80">+91  7760719917</p>
-                 
+                  <p className="text-teak-lightest/80">+91 7760719917</p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-4">
                 <div className="bg-teak-medium rounded-full p-3 shrink-0">
                   <Mail className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h4 className="font-bold text-white mb-1">Email</h4>
-                  <p className="text-teak-lightest/80">Mangaluruwoods@gmail.com</p>
+                  <p className="text-teak-lightest/80">
+                    Mangaluruwoods@gmail.com
+                  </p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-4">
                 <div className="bg-teak-medium rounded-full p-3 shrink-0">
                   <MapPin className="h-6 w-6 text-white" />
@@ -148,12 +158,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                   </p>
                   <p className="text-teak-lightest/80 mt-2">
                     {/* <span className="block font-medium">Other Branches:</span> */}
-                   Mangalore| Bangalore | Hyderabad | Mumbai
+                    Mangalore| Bangalore | Hyderabad | Mumbai
                   </p>
                 </div>
               </div>
             </div>
-            
+
             <div className="mt-10">
               <h4 className="font-bold text-white mb-4">Business Hours</h4>
               <div className="grid grid-cols-2 gap-2 text-sm">
@@ -166,18 +176,23 @@ const handleSubmit = async (e: React.FormEvent) => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white/5 backdrop-blur-sm p-8 rounded-lg shadow-xl">
-            <h3 className="text-2xl font-bold mb-6 text-teak-light">Send us a Message</h3>
-            
+            <h3 className="text-2xl font-bold mb-6 text-teak-light">
+              Send us a Message
+            </h3>
+
             {formSubmitted ? (
               <div className="flex flex-col items-center justify-center h-full py-10">
                 <div className="bg-teak-medium/20 rounded-full p-4 mb-4">
                   <Check className="h-10 w-10 text-teak-light" />
                 </div>
-                <h4 className="text-xl font-bold text-white mb-2">Thank You!</h4>
+                <h4 className="text-xl font-bold text-white mb-2">
+                  Thank You!
+                </h4>
                 <p className="text-teak-lightest/80 text-center">
-                  Your message has been sent successfully. We'll get back to you shortly.
+                  Your message has been sent successfully. We'll get back to you
+                  shortly.
                 </p>
                 <button
                   onClick={() => setFormSubmitted(false)}
@@ -189,7 +204,10 @@ const handleSubmit = async (e: React.FormEvent) => {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="name" className="block text-teak-lightest mb-1">
+                  <label
+                    htmlFor="name"
+                    className="block text-teak-lightest mb-1"
+                  >
                     Full Name
                   </label>
                   <input
@@ -203,9 +221,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                     placeholder="Your name"
                   />
                 </div>
-                
+
                 <div>
-                  <label htmlFor="email" className="block text-teak-lightest mb-1">
+                  <label
+                    htmlFor="email"
+                    className="block text-teak-lightest mb-1"
+                  >
                     Email Address
                   </label>
                   <input
@@ -219,9 +240,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                     placeholder="your.email@example.com"
                   />
                 </div>
-                
+
                 <div>
-                  <label htmlFor="phone" className="block text-teak-lightest mb-1">
+                  <label
+                    htmlFor="phone"
+                    className="block text-teak-lightest mb-1"
+                  >
                     Phone Number
                   </label>
                   <input
@@ -234,9 +258,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                     placeholder="Your phone number (optional)"
                   />
                 </div>
-                
+
                 <div>
-                  <label htmlFor="message" className="block text-teak-lightest mb-1">
+                  <label
+                    htmlFor="message"
+                    className="block text-teak-lightest mb-1"
+                  >
                     Your Message
                   </label>
                   <textarea
@@ -250,7 +277,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                     placeholder="Tell us about your requirements..."
                   />
                 </div>
-                
+
                 <button
                   type="submit"
                   disabled={isSubmitting}
@@ -258,9 +285,25 @@ const handleSubmit = async (e: React.FormEvent) => {
                 >
                   {isSubmitting ? (
                     <>
-                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                       <span>Sending...</span>
                     </>

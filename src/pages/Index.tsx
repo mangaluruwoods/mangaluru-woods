@@ -32,6 +32,11 @@ const Index = () => {
       <Navbar />
       <Hero />
 
+        {/* Section Divider */}
+      <div className="h-1 bg-gradient-to-r from-teak-dark via-wood-medium to-teak-dark"></div>
+
+      <Products />
+
       {/* Section Divider */}
       <div className="h-1 bg-gradient-to-r from-teak-dark via-wood-medium to-teak-dark"></div>
 
@@ -40,10 +45,7 @@ const Index = () => {
       <div className="h-1 bg-gradient-to-r from-teak-dark via-wood-medium to-teak-dark"></div>
 
       <Locations />
-      {/* Section Divider */}
-      <div className="h-1 bg-gradient-to-r from-teak-dark via-wood-medium to-teak-dark"></div>
-
-      <Products />
+    
 
       {/* Section Divider */}
       <div className="h-1 bg-gradient-to-r from-teak-dark via-wood-medium to-teak-dark"></div>

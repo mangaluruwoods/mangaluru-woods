@@ -152,63 +152,9 @@ const ProductCategoryDetail = () => {
         </div>
       </div>
 
-      {/* Features Section */}
-      {category.features && category.features.length > 0 && (
-        <div className="container mx-auto px-4 md:px-6 py-12">
-          <div className="bg-white rounded-2xl shadow-lg p-6 md:p-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-              Key Features & Benefits
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {category.features.map((feature, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-3 p-4 bg-amber-50 rounded-lg border border-amber-200 hover:shadow-md transition-shadow"
-                >
-                  <div className="bg-amber-600 text-white p-1.5 rounded-full flex-shrink-0 mt-0.5">
-                    <Check className="w-4 h-4" />
-                  </div>
-                  <span className="text-gray-800 font-medium">{feature}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Specifications Section */}
-      {category.specifications &&
-        Object.keys(category.specifications).length > 0 && (
-          <div className="container mx-auto px-4 md:px-6 pb-12">
-            <div className="bg-gradient-to-br from-amber-900 to-orange-900 text-white rounded-2xl shadow-lg p-6 md:p-10">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6 flex items-center gap-3">
-                <Package className="w-8 h-8" />
-                Technical Specifications
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {Object.entries(category.specifications).map(
-                  ([key, value], index) => (
-                    <div
-                      key={index}
-                      className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20"
-                    >
-                      <dt className="text-amber-200 text-sm font-semibold mb-1 uppercase tracking-wide">
-                        {key}
-                      </dt>
-                      <dd className="text-white text-lg font-medium">
-                        {value}
-                      </dd>
-                    </div>
-                  )
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-      {/* Subcategory Filter */}
+       {/* Subcategory Filter */}
       {category.subcategories.length > 0 && (
-        <div className="container mx-auto px-4 md:px-6 pb-8">
+        <div className="container mx-auto px-4 md:px-6 pb-8 mt-4">
           <div className="flex items-center gap-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-900">
               Browse Collection
@@ -294,6 +240,62 @@ const ProductCategoryDetail = () => {
           </div>
         )}
       </div>
+
+      {/* Features Section */}
+      {category.features && category.features.length > 0 && (
+        <div className="container mx-auto px-4 md:px-6 py-12">
+          <div className="bg-white rounded-2xl shadow-lg p-6 md:p-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+              Key Features & Benefits
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {category.features.map((feature, index) => (
+                <div
+                  key={index}
+                  className="flex items-start gap-3 p-4 bg-amber-50 rounded-lg border border-amber-200 hover:shadow-md transition-shadow"
+                >
+                  <div className="bg-amber-600 text-white p-1.5 rounded-full flex-shrink-0 mt-0.5">
+                    <Check className="w-4 h-4" />
+                  </div>
+                  <span className="text-gray-800 font-medium">{feature}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Specifications Section */}
+      {category.specifications &&
+        Object.keys(category.specifications).length > 0 && (
+          <div className="container mx-auto px-4 md:px-6 pb-12">
+            <div className="bg-gradient-to-br from-amber-900 to-orange-900 text-white rounded-2xl shadow-lg p-6 md:p-10">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6 flex items-center gap-3">
+                <Package className="w-8 h-8" />
+                Technical Specifications
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {Object.entries(category.specifications).map(
+                  ([key, value], index) => (
+                    <div
+                      key={index}
+                      className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20"
+                    >
+                      <dt className="text-amber-200 text-sm font-semibold mb-1 uppercase tracking-wide">
+                        {key}
+                      </dt>
+                      <dd className="text-white text-lg font-medium">
+                        {value}
+                      </dd>
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+     
 
       {/* Contact CTA */}
       <div className="container mx-auto px-4 md:px-6 pb-16">
